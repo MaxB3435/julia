@@ -1,12 +1,12 @@
 from math import sqrt
 
 #range of x-values
-xmin = -0.25
-xmax = 0.25
+xmin = -2
+xmax = 2
 
 #range of y-values
-ymin = -1
-ymax = -0.5
+ymin = -2
+ymax = 2
 
 #calculate the range
 rangex = xmax - xmin
@@ -14,34 +14,38 @@ rangey = ymax - ymin
 
 def setup():
     global xscl, yscl
-    size(800,800)
+    size(600,600)
     colorMode(HSB)
     noStroke()
-    xscl = float(rangex)/width
-    yscl = float(rangey)/height
-    translate(width/2,height/2)
+    xscl = width / float(rangex)
+    yscl = height / float(rangey)
+    
     
 def draw():
     #origin in center
-    
+    translate(width/2,height/2)    
     #go over all x's and y's on the grid
-    for x in range(width):
-        for y in range(height):
-            z = [(xmin + x * xscl),
-                 (ymin + y * yscl) ]
-            # put it into the mandelbrot function
-            col=mandelbrot(z,100)
-            #if mandelbrot returns 0
+    x = xmin
+    while x < xmax:
+        y = ymin
+        while y < ymax:
+            z = [x,y]
+            c = [-0.4,0.6]
+            # put it into the julia program
+            col = julia(z,c,100)
+            #if julia returns 100
             if col == 100:
                 fill(0)
             else:
                 fill(3*col,255,255)
-            rect(x,y,1,1)
+            rect(x*xscl,y*yscl,1,1)
+            y += 0.01
+        x += 0.01
             
     
 
 
-def mandelbrot(z,num):
+def julia(z,c,num):
     count = 0
     #define z1 as z
     z1 = z
@@ -52,7 +56,7 @@ def mandelbrot(z,num):
             #return the step it was diverged on
             return count
         #iterate z
-        z1 =cAdd(cMult(z1,z1),z)
+        z1 =cAdd(cMult(z1,z1),c)
         count+=1
     #if z hasn't diverged by the end
     return num
