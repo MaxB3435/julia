@@ -39,8 +39,8 @@ def draw():
             else:
                 fill(3*col,255,255)
             rect(x*xscl,y*yscl,1,1)
-            y += 0.01
-        x += 0.01
+            y += 0.0025*rangey
+        x += 0.0025*rangex
             
     
 
